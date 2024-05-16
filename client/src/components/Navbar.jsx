@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../logo.svg?react'
 import SVG from './SVG'
 import A from './A'
 
+let logged = false
+
 export default ({ isDark, setIsDark }) => {
+    const [open, setOpen] = useState(false)
+
     return (
         <nav className="flex select-none">
             <A href="/" className="flex items-center py-2 active:scale-95">
@@ -25,13 +29,37 @@ export default ({ isDark, setIsDark }) => {
                 />
 
                 <div className="ml-3" />
-                <A
-                    className="flex rounded-xl bg-primary-600 px-4 py-2 font-bold text-light hover:bg-primary-500 active:scale-95"
-                    href="/auth"
-                >
-                    <SVG d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
-                    Sign In
-                </A>
+                {logged ? (
+                    <>
+                        <SVG
+                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                            className="flex size-10 cursor-pointer items-center justify-center rounded-full p-2 hover:bg-light-400 dark:hover:bg-mixed-800"
+                        />
+                        <div
+                            className="flex items-center cursor-pointer ml-3"
+                            onClick={() => setOpen(!open)}
+                        >
+                            <div className="bg-black size-10 rounded-full" />
+                        </div>
+                    </>
+                ) : (
+                    <A
+                        className="flex rounded-xl bg-primary-600 px-4 py-2 font-bold text-light hover:bg-primary-500 active:scale-95"
+                        href="/auth"
+                    >
+                        <SVG d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+                        Sign In
+                    </A>
+                )}
+                {open ? (
+                    <div className="absolute mt-32 bg-white rounded-xl">
+                        <div>profile</div>
+                        <div>options</div>
+                        <div>logout</div>
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
         </nav>
     )

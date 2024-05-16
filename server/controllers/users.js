@@ -1,6 +1,6 @@
 const User = require('../models/users')
 
-exports.getAllUsers = async (req, res) => {
+exports.getAll = async (req, res) => {
     try {
         const result = await User.find()
         if (result && result.length !== 0) {
@@ -15,7 +15,7 @@ exports.getAllUsers = async (req, res) => {
     }
 }
 
-exports.getUserById = async (req, res) => {
+exports.getById = async (req, res) => {
     try {
         const result = await User.findById(req.params.id)
         if (result) {
@@ -30,7 +30,7 @@ exports.getUserById = async (req, res) => {
     }
 }
 
-exports.deleteUser = async (req, res) => {
+exports.delete = async (req, res) => {
     try {
         const result = await User.findByIdAndDelete(req.params.id)
         if (result) {
@@ -44,10 +44,11 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
-exports.updateUser = async (req, res) => {
+exports.update = async (req, res) => {
     try {
         const data = {
             username: req.body.username,
+            email: req.body.email,
             password: req.body.password,
         }
         const result = await User.findByIdAndUpdate(req.params.id, data)
@@ -65,21 +66,49 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-exports.createUser = async (req, res) => {
+exports.register = async (req, res) => {
     try {
+        if (req.body.password != req.body.confirmPassword) {
+            return res.status(400).send({
+                msg: 'Password mismatch',
+            })
+        }
         const data = new User({
             username: req.body.username,
+            email: req.body.email,
             password: req.body.password,
         })
         const result = await data.save()
         if (result) {
             return res.status(201).send({
                 msg: 'User created',
-                payload: result,
+                payload: {},
             })
         }
         res.status(500).send({
             msg: 'User was not created',
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+exports.login = async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.body.username })
+        if (!user) {
+            return res.status(400).send({
+                msg: 'No such user',
+            })
+        }
+        if (req.body.password != user.password) {
+            return res.status(401).send({
+                msg: 'Incorrect password',
+            })
+        }
+        res.status(200).send({
+            msg: 'User logged in',
+            payload: {},
         })
     } catch (error) {
         res.status(500).send(error)
