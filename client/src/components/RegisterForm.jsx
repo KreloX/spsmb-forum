@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../features/authActions'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export default () => {
     const { success } = useSelector((state) => state.auth)
