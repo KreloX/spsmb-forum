@@ -33,14 +33,11 @@ exports.getById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        const createdDate = `${date.getDate()}.${
-            date.getMonth() + 1
-        }.${date.getFullYear()}`
         const data = new Forum({
-            createdDate: createdDate,
+            createdDate: date,
             header: req.body.header,
             text: req.body.text,
-            user: req.user,
+            user: req.body.user,
             isLocked: false,
         })
         const result = await data.save()
@@ -75,10 +72,10 @@ exports.delete = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const data = {
-            createdDate: createdDate,
+            createdDate: date,
             header: req.body.header,
             text: req.body.text,
-            user: req.user,
+            user: req.body.user,
             isLocked: false,
         }
         const result = await Forum.findByIdAndUpdate(req.params.id, data)

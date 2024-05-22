@@ -10,7 +10,7 @@ router.get('/', forumsController.getAll)
 
 router.get('/:id', forumsController.getById)
 
-router.get('/', forumsController.create)
+router.post('/', forumsController.create)
 
 router.delete('/:id', forumsController.delete)
 
