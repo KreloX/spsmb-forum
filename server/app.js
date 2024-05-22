@@ -6,7 +6,7 @@ const logger = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
 mongoose
-    .connect('mongodb+srv://admin:adminadmin@cluster0.mlussai.mongodb.net/prvnidatabaze?retryWrites=true&w=majority')
+    .connect('')
     .then(() => console.log('Database connected'))
     .catch((err) => console.log(err))
 

@@ -1,5 +1,4 @@
 const Forum = require('../models/forums')
-const date = new Date()
 
 exports.getAll = async (req, res) => {
     try {
@@ -34,7 +33,7 @@ exports.getById = async (req, res) => {
 exports.create = async (req, res) => {
     try {
         const data = new Forum({
-            createdDate: date,
+            createdDate: new Date(),
             header: req.body.header,
             text: req.body.text,
             user: req.body.user,
