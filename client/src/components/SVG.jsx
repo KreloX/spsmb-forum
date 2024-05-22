@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge'
 
-export default ({ d, className, onClick }) => (
+export default ({ className, onClick, ...d }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -10,6 +10,13 @@ export default ({ d, className, onClick }) => (
         className={twMerge('size-6', className)}
         onClick={onClick}
     >
-        <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+        {d.d.map((element, index) => (
+            <path
+                key={index}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d={element}
+            />
+        ))}
     </svg>
 )

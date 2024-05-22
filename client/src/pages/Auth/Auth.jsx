@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge'
 export default () => {
     const [isRegisterScreen, setIsRegisterScreen] = useState(false)
     return (
-        <div className="dark:bg-mixed-800 bg-light-100 mx-auto flex max-w-lg flex-col rounded-xl">
+        <div className="dark:bg-mixed-800 bg-light-100 mx-auto flex max-w-lg flex-col rounded-xl shadow-md">
             <div className="flex text-lg font-semibold">
                 <button
                     className={twMerge(

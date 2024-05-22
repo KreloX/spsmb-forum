@@ -12,10 +12,10 @@ export default () => {
     }, [isDark])
     return (
         <div
-            className={`${isDark ? 'dark' : ''} dark:bg-mixed-900 text-dark dark:text-light bg-light-300 flex min-h-screen flex-col`}
+            className={`${isDark ? 'dark' : ''} dark:bg-mixed-900 text-dark dark:text-light bg-light-300 flex min-h-screen flex-col shadow-light-300 dark:shadow-mixed-900`}
             style={isDark ? { colorScheme: 'dark' } : {}}
         >
-            <header className="m-auto w-full px-8 py-2 xl:max-w-screen-xl">
+            <header className="m-auto w-full px-4 py-2 xl:max-w-screen-xl">
                 <Navbar isDark={isDark} setIsDark={setIsDark} />
             </header>
             <main className="m-auto w-full flex-grow px-4 xl:max-w-screen-xl">

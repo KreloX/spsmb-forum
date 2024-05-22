@@ -7,7 +7,6 @@ export default ({
     autoComplete,
     placeholder,
     value,
-    onChange,
     className,
     register,
     children,
@@ -25,7 +24,6 @@ export default ({
             required
             placeholder={placeholder}
             value={value}
-            onChange={onChange}
             className={twMerge(
                 'focus:ring-primary-500 dark:bg-mixed-700 placeholder:text-dark-400 bg-light-200 w-full rounded-xl px-11 py-2 font-semibold shadow-md outline-none ring-0 ring-inset autofill:text-green-700 focus:ring-2',
                 className

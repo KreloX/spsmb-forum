@@ -1,5 +1,5 @@
 export default () => (
-    <div className="bg-light-100 dark:bg-mixed-800 flex rounded-xl">
+    <div className="bg-light-100 dark:bg-mixed-800 flex rounded-xl shadow-md">
         <article>
             <h3>Heading</h3>
             <p>

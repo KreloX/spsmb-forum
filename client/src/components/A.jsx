@@ -1,10 +1,10 @@
 import { twMerge } from 'tailwind-merge'
 
-export default ({ children, href, className }) => (
-    <a href={href} className="w-fit">
+export default ({ children, href, className, aClassName }) => (
+    <a href={href} className={twMerge('w-fit', aClassName)}>
         <p
             className={twMerge(
-                'whitespace-nowrap font-semibold active:scale-95',
+                'flex whitespace-nowrap font-semibold active:scale-95',
                 className
             )}
         >
