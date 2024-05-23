@@ -37,7 +37,7 @@ exports.create = async (req, res) => {
             header: req.body.header,
             text: req.body.text,
             user: req.body.user,
-            isLocked: false,
+            locked: false,
         })
         const result = await data.save()
         if (result) {
@@ -75,7 +75,7 @@ exports.update = async (req, res) => {
             header: req.body.header,
             text: req.body.text,
             user: req.body.user,
-            isLocked: false,
+            locked: false,
         }
         const result = await Forum.findByIdAndUpdate(req.params.id, data)
         if (result) {

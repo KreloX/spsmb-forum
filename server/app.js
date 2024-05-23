@@ -6,7 +6,7 @@ const logger = require('morgan')
 const cors = require('cors')
 const mongoose = require('mongoose')
 mongoose
-    .connect('mongodb+srv://admin:TohleHesloNeníMocTajné@spsmb-forum.8pcmofr.mongodb.net/?retryWrites=true&w=majority&appName=spsmb-forum')
+    .connect('')
     .then(() => console.log('Database connected'))
     .catch((err) => console.log(err))
 

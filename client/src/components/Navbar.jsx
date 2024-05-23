@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../logo.svg?react'
 import SVG from './SVG'
 import A from './A'
@@ -19,6 +19,26 @@ export default ({ isDark, setIsDark }) => {
     const [open, setOpen] = useState(false)
     const { success } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
+    const dropdownRef = useRef(null)
+    const profileRef = useRef(null)
+
+    const handleClickOutside = (event) => {
+        if (
+            dropdownRef.current &&
+            !dropdownRef.current.contains(event.target) &&
+            profileRef.current &&
+            !profileRef.current.contains(event.target)
+        ) {
+            setOpen(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [dropdownRef])
 
     return (
         <>
@@ -46,7 +66,11 @@ export default ({ isDark, setIsDark }) => {
                             />
                             <div
                                 className="flex items-center cursor-pointer ml-3"
-                                onClick={() => setOpen(!open)}
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setOpen(!open)
+                                }}
+                                ref={profileRef}
                             >
                                 <div className="bg-black size-10 rounded-full" />
                             </div>
@@ -65,9 +89,10 @@ export default ({ isDark, setIsDark }) => {
             <div className="flex justify-end">
                 <div
                     className={twMerge(
-                        'absolute bg-light-100 dark:bg-mixed-800 rounded-xl shadow-md border border-light-400 dark:border-mixed-400 p-3 flex flex-col w-min transition origin-top',
-                        open ? '' : 'scale-y-75 opacity-0'
+                        'absolute bg-light-100 dark:bg-mixed-800 rounded-xl shadow-md border border-light-400 dark:border-mixed-400 p-3 flex flex-col w-min transition duration-100 origin-top ease-in-out',
+                        open ? '' : 'scale-y-90 opacity-0'
                     )}
+                    ref={dropdownRef}
                 >
                     <A
                         className="hover:bg-light-200 dark:hover:bg-mixed-900 p-2 rounded-lg"
