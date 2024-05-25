@@ -42,7 +42,7 @@ export default ({ isDark, setIsDark }) => {
 
     return (
         <>
-            <nav className="flex select-none px-4">
+            <nav className="flex select-none px-5">
                 <A href="/" className="items-center py-2 active:scale-95">
                     <Logo className="pointer-events-none size-12" />
                     <h2 className="ml-1 whitespace-nowrap tracking-tight">
@@ -53,7 +53,7 @@ export default ({ isDark, setIsDark }) => {
                 <section className="flex flex-grow items-center justify-end">
                     <SVG
                         d={isDark ? moonIcon : sunIcon}
-                        className="flex size-10 cursor-pointer items-center justify-center rounded-full p-2 hover:bg-light-400 dark:hover:bg-mixed-800"
+                        className="hover:bg-light-400 dark:hover:bg-mixed-800 flex size-10 cursor-pointer items-center justify-center rounded-full p-2"
                         onClick={() => setIsDark(!isDark)}
                     />
 
@@ -62,22 +62,22 @@ export default ({ isDark, setIsDark }) => {
                         <>
                             <SVG
                                 d={bellIcon}
-                                className="flex size-10 cursor-pointer items-center justify-center rounded-full p-2 hover:bg-light-400 dark:hover:bg-mixed-800"
+                                className="hover:bg-light-400 dark:hover:bg-mixed-800 flex size-10 cursor-pointer items-center justify-center rounded-full p-2"
                             />
                             <div
-                                className="flex items-center cursor-pointer ml-3"
+                                className="ml-3 flex cursor-pointer items-center"
                                 onClick={(e) => {
                                     e.stopPropagation()
                                     setOpen(!open)
                                 }}
                                 ref={profileRef}
                             >
-                                <div className="bg-black size-10 rounded-full" />
+                                <div className="size-10 rounded-full bg-black" />
                             </div>
                         </>
                     ) : (
                         <A
-                            className="rounded-xl bg-primary-600 px-4 py-2 font-bold text-light hover:bg-primary-500 active:scale-95 shadow-md"
+                            className="bg-primary-600 text-light hover:bg-primary-500 rounded-xl px-4 py-2 font-bold shadow-md active:scale-95"
                             href="/auth"
                         >
                             <SVG d={loginIcon} />
@@ -89,13 +89,13 @@ export default ({ isDark, setIsDark }) => {
             <div className="flex justify-end">
                 <div
                     className={twMerge(
-                        'absolute bg-light-100 dark:bg-mixed-800 rounded-xl shadow-md border border-light-400 dark:border-mixed-400 p-3 flex flex-col w-min transition duration-100 origin-top ease-in-out',
-                        open ? '' : 'scale-y-90 opacity-0'
+                        'bg-light-100 dark:bg-mixed-800 border-light-400 dark:border-mixed-400 absolute flex w-min origin-top flex-col rounded-xl border p-3 shadow-md transition duration-100 ease-in-out',
+                        open ? '' : 'pointer-events-none scale-y-90 opacity-0'
                     )}
                     ref={dropdownRef}
                 >
                     <A
-                        className="hover:bg-light-200 dark:hover:bg-mixed-900 p-2 rounded-lg"
+                        className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
                         aClassName="w-full"
                         href="/user"
                     >
@@ -103,7 +103,7 @@ export default ({ isDark, setIsDark }) => {
                         Profile
                     </A>
                     <A
-                        className="hover:bg-light-200 dark:hover:bg-mixed-900 p-2 rounded-lg"
+                        className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
                         aClassName="w-full"
                         href="/options"
                     >
@@ -112,7 +112,7 @@ export default ({ isDark, setIsDark }) => {
                     </A>
                     <hr className="my-2 border-current" />
                     <A
-                        className="hover:bg-light-200 dark:hover:bg-mixed-900 p-2 rounded-lg"
+                        className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
                         aClassName="w-full"
                         onClick={() => dispatch(logout())}
                         href=""
