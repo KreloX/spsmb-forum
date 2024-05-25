@@ -8,4 +8,4 @@ const schema = mongoose.Schema({
     locked: { type: Boolean, required: true },
 })
 
-module.exports = mongoose.model('Forum', schema)
+module.exports = mongoose.model('Thread', schema)
