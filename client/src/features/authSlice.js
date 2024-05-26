@@ -16,7 +16,7 @@ const authSlice = createSlice({
             state.success = payload.payload.status == 201
         })
         builder.addCase(loginUser.fulfilled, (state, payload) => {
-            state.success = payload.payload.status == 201
+            state.success = payload.payload.status == 200
         })
     },
 })
