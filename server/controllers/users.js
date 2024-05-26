@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 
 exports.getAll = async (req, res) => {
     try {
-        const result = await User.find()
+        const result = await User.find().select("-password")
         if (result && result.length !== 0) {
             return res.status(200).send({
                 msg: 'Users found!',
@@ -18,7 +18,7 @@ exports.getAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        const result = await User.findById(req.params.id)
+        const result = await User.findById(req.params.id).select("-password")
         if (result) {
             return res.status(200).send({
                 msg: 'User found',
@@ -47,10 +47,12 @@ exports.delete = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        const hash = await bcrypt.hash(req.body.password, 10);
+
         const data = {
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password,
+            password: hash,
         }
         const result = await User.findByIdAndUpdate(req.params.id, data)
         if (result) {
@@ -75,9 +77,7 @@ exports.register = async (req, res) => {
             })
         }
 
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(req.body.password, salt);
+        const hash = await bcrypt.hash(req.body.password, 10);
 
         const data = new User({
             username: req.body.username,
@@ -107,15 +107,28 @@ exports.login = async (req, res) => {
                 msg: 'No such user',
             })
         }
-        if (req.body.password != user.password) {
-            return res.status(401).send({
-                msg: 'Incorrect password',
-            })
+
+       bcrypt.compare(req.body.password, user.password, (err, result) => {
+            if (err) {
+                console.error('Error comparing passwords:', err);
+                return res.status(400).send({
+                    msg: 'Passwords could not be compared',
+                });
+            }
+        
+        if (result) {
+            console.log('Passwords match');
+            return res.status(200).send({
+                msg: 'User was logged in',
+            });
+        } else {
+            console.log('Passwords do not match');
+            return res.status(400).send({
+                msg: 'User could not be logged in',
+            });
         }
-        res.status(200).send({
-            msg: 'User logged in',
-            payload: {},
-        })
+        });
+        
     } catch (error) {
         res.status(500).send(error)
     }
