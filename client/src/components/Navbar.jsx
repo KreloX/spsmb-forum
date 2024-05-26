@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../logo.svg?react'
 import SVG from './SVG'
-import A from './A'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../features/authSlice'
 import {
@@ -14,6 +13,7 @@ import {
     userIcon,
 } from '../constants'
 import { twMerge } from 'tailwind-merge'
+import CustomLink from './CustomLink'
 
 export default ({ isDark, setIsDark }) => {
     const [open, setOpen] = useState(false)
@@ -43,12 +43,15 @@ export default ({ isDark, setIsDark }) => {
     return (
         <>
             <nav className="flex select-none px-5">
-                <A href="/" className="items-center py-2 active:scale-95">
+                <CustomLink
+                    className="items-center py-2 active:scale-95"
+                    to="/"
+                >
                     <Logo className="pointer-events-none size-12" />
                     <h2 className="ml-1 whitespace-nowrap tracking-tight">
                         SPŠMB Fórum
                     </h2>
-                </A>
+                </CustomLink>
 
                 <section className="flex flex-grow items-center justify-end">
                     <SVG
@@ -61,8 +64,8 @@ export default ({ isDark, setIsDark }) => {
                     {success ? (
                         <>
                             <SVG
-                                d={bellIcon}
                                 className="hover:bg-light-400 dark:hover:bg-mixed-800 flex size-10 cursor-pointer items-center justify-center rounded-full p-2"
+                                d={bellIcon}
                             />
                             <div
                                 className="ml-3 flex cursor-pointer items-center"
@@ -76,13 +79,14 @@ export default ({ isDark, setIsDark }) => {
                             </div>
                         </>
                     ) : (
-                        <A
+                        <CustomLink
                             className="bg-primary-600 text-light hover:bg-primary-500 rounded-xl px-4 py-2 font-bold shadow-md active:scale-95"
-                            href="/auth"
+                            to="/auth/sign-in"
+                            state="sign-in"
                         >
                             <SVG d={loginIcon} />
                             Sign In
-                        </A>
+                        </CustomLink>
                     )}
                 </section>
             </nav>
@@ -94,32 +98,32 @@ export default ({ isDark, setIsDark }) => {
                     )}
                     ref={dropdownRef}
                 >
-                    <A
+                    <CustomLink
                         className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
                         aClassName="w-full"
-                        href="/user"
+                        to="/user"
                     >
                         <SVG className="mr-2" d={userIcon} />
                         Profile
-                    </A>
-                    <A
+                    </CustomLink>
+                    <CustomLink
                         className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
                         aClassName="w-full"
-                        href="/options"
+                        to="/options"
                     >
                         <SVG className="mr-2" d={cogIcon} />
                         Options
-                    </A>
+                    </CustomLink>
                     <hr className="my-2 border-current" />
-                    <A
+                    <CustomLink
                         className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
                         aClassName="w-full"
                         onClick={() => dispatch(logout())}
-                        href=""
+                        to=""
                     >
                         <SVG className="mr-2" d={logoutIcon} />
                         Sign out
-                    </A>
+                    </CustomLink>
                 </div>
             </div>
         </>
