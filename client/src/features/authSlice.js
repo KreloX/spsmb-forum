@@ -12,11 +12,11 @@ const authSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(registerUser.fulfilled, (state) => {
-            state.success = true
+        builder.addCase(registerUser.fulfilled, (state, payload) => {
+            state.success = payload.payload.status == 201
         })
-        builder.addCase(loginUser.fulfilled, (state) => {
-            state.success = true
+        builder.addCase(loginUser.fulfilled, (state, payload) => {
+            state.success = payload.payload.status == 200
         })
     },
 })
