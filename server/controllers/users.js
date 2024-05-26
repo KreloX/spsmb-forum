@@ -1,4 +1,5 @@
 const User = require('../models/users')
+const bcrypt = require("bcrypt")
 
 exports.getAll = async (req, res) => {
     try {
@@ -21,7 +22,7 @@ exports.getById = async (req, res) => {
         if (result) {
             return res.status(200).send({
                 msg: 'User found',
-                payload: result,
+                payload: result, 
             })
         }
         res.status(404).send({ msg: 'User not found' })
@@ -73,10 +74,15 @@ exports.register = async (req, res) => {
                 msg: 'Password mismatch',
             })
         }
+
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hash = await bcrypt.hash(req.body.password, salt);
+
         const data = new User({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password,
+            password: hash,
         })
         const result = await data.save()
         if (result) {
