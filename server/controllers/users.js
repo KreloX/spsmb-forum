@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 
 exports.getAll = async (req, res) => {
     try {
-        const result = await User.find()
+        const result = await User.find().select("-password")
         if (result && result.length !== 0) {
             return res.status(200).send({
                 msg: 'Users found!',
@@ -18,7 +18,7 @@ exports.getAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        const result = await User.findById(req.params.id)
+        const result = await User.findById(req.params.id).select("-password")
         if (result) {
             return res.status(200).send({
                 msg: 'User found',
@@ -47,9 +47,7 @@ exports.delete = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(req.body.password, salt);
+        const hash = await bcrypt.hash(req.body.password, 10);
 
         const data = {
             username: req.body.username,
@@ -79,9 +77,7 @@ exports.register = async (req, res) => {
             })
         }
 
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(req.body.password, salt);
+        const hash = await bcrypt.hash(req.body.password, 10);
 
         const data = new User({
             username: req.body.username,
