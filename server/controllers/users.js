@@ -1,9 +1,22 @@
 const User = require('../models/users')
-const bcrypt = require("bcrypt")
+const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer')
+const crypto = require('crypto')
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.seznam.cz',
+    port: 587,
+    auth: {
+        user: 'spsmb.forum@seznam.cz',
+        pass: '',
+    },
+})
 
 exports.getAll = async (req, res) => {
     try {
-        const result = await User.find().select("-password")
+        const result = await User.find()
+            .select('-password')
+            .select('-passwordToken')
         if (result && result.length !== 0) {
             return res.status(200).send({
                 msg: 'Users found!',
@@ -18,11 +31,13 @@ exports.getAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        const result = await User.findById(req.params.id).select("-password")
+        const result = await User.findById(req.params.id)
+            .select('-password')
+            .select('-passwordToken')
         if (result) {
             return res.status(200).send({
                 msg: 'User found',
-                payload: result, 
+                payload: result,
             })
         }
         res.status(404).send({ msg: 'User not found' })
@@ -47,7 +62,7 @@ exports.delete = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const hash = await bcrypt.hash(req.body.password, 10);
+        const hash = await bcrypt.hash(req.body.password, 10)
 
         const data = {
             username: req.body.username,
@@ -77,7 +92,7 @@ exports.register = async (req, res) => {
             })
         }
 
-        const hash = await bcrypt.hash(req.body.password, 10);
+        const hash = await bcrypt.hash(req.body.password, 10)
 
         const data = new User({
             username: req.body.username,
@@ -108,27 +123,70 @@ exports.login = async (req, res) => {
             })
         }
 
-       bcrypt.compare(req.body.password, user.password, (err, result) => {
+        bcrypt.compare(req.body.password, user.password, (err, result) => {
             if (err) {
-                console.error('Error comparing passwords:', err);
                 return res.status(400).send({
                     msg: 'Passwords could not be compared',
-                });
+                })
             }
-        
-        if (result) {
-            console.log('Passwords match');
-            return res.status(200).send({
-                msg: 'User was logged in',
-            });
-        } else {
-            console.log('Passwords do not match');
+
+            if (result) {
+                return res.status(200).send({
+                    msg: 'User was logged in',
+                })
+            } else {
+                return res.status(400).send({
+                    msg: 'User could not be logged in',
+                })
+            }
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+exports.requestReset = async (req, res) => {
+    try {
+        const token = crypto.randomBytes(16).toString('hex')
+        const result = await User.findOneAndUpdate(
+            { username: req.body.username },
+            { passwordToken: token }
+        )
+        const info = await transporter.sendMail({
+            from: '"SPŠMB Fórum" <spsmb.forum@seznam.cz>', // sender address
+            to: result.email, // list of receivers
+            subject: '[SPŠMB Fórum] Password reset', // Subject line
+            text: `Reset your password by clicking the following link: http://localhost:5173/auth/reset/${token}`, // plain text body
+            html: `<p>Reset your password by clicking the following link:</p><a href="http://localhost:5173/auth/reset/${token}">Reset your password</a>`, // html body
+        })
+        res.status(200).send({
+            msg: 'Reset email sent',
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+exports.updatePassword = async (req, res) => {
+    try {
+        if (req.body.password != req.body.confirmPassword) {
             return res.status(400).send({
-                msg: 'User could not be logged in',
-            });
+                msg: 'Password mismatch',
+            })
         }
-        });
-        
+        const hash = await bcrypt.hash(req.body.password, 10)
+        const result = await User.findOneAndUpdate(
+            { passwordToken: req.params.token },
+            { password: hash }
+        )
+        if (result) {
+            return res.status(200).send({
+                msg: 'User password changed',
+            })
+        }
+        res.status(500).send({
+            msg: 'User password was not changed',
+        })
     } catch (error) {
         res.status(500).send(error)
     }
