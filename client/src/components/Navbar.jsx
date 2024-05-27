@@ -22,6 +22,8 @@ export default ({ isDark, setIsDark }) => {
     const dropdownRef = useRef(null)
     const profileRef = useRef(null)
 
+    console.log(success)
+
     const handleClickOutside = (event) => {
         if (
             dropdownRef.current &&
@@ -56,7 +58,7 @@ export default ({ isDark, setIsDark }) => {
                 <section className="flex flex-grow items-center justify-end">
                     <SVG
                         d={isDark ? moonIcon : sunIcon}
-                        className="hover:bg-light-400 dark:hover:bg-mixed-800 flex size-10 cursor-pointer items-center justify-center rounded-full p-2"
+                        className="flex size-10 cursor-pointer items-center justify-center rounded-full p-2 hover:bg-light-400 dark:hover:bg-mixed-800"
                         onClick={() => setIsDark(!isDark)}
                     />
 
@@ -64,7 +66,7 @@ export default ({ isDark, setIsDark }) => {
                     {success ? (
                         <>
                             <SVG
-                                className="hover:bg-light-400 dark:hover:bg-mixed-800 flex size-10 cursor-pointer items-center justify-center rounded-full p-2"
+                                className="flex size-10 cursor-pointer items-center justify-center rounded-full p-2 hover:bg-light-400 dark:hover:bg-mixed-800"
                                 d={bellIcon}
                             />
                             <div
@@ -80,7 +82,7 @@ export default ({ isDark, setIsDark }) => {
                         </>
                     ) : (
                         <CustomLink
-                            className="bg-primary-600 text-light hover:bg-primary-500 rounded-xl px-4 py-2 font-bold shadow-md active:scale-95"
+                            className="rounded-xl bg-primary-600 px-4 py-2 font-bold text-light shadow-md hover:bg-primary-500 active:scale-95"
                             to="/auth/sign-in"
                             state="sign-in"
                         >
@@ -93,13 +95,13 @@ export default ({ isDark, setIsDark }) => {
             <div className="flex justify-end">
                 <div
                     className={twMerge(
-                        'bg-light-100 dark:bg-mixed-800 border-light-400 dark:border-mixed-400 absolute flex w-min origin-top flex-col rounded-xl border p-3 shadow-md transition duration-100 ease-in-out',
+                        'absolute flex w-min origin-top flex-col rounded-xl border border-light-400 bg-light-100 p-3 shadow-md transition duration-100 ease-in-out dark:border-mixed-400 dark:bg-mixed-800',
                         open ? '' : 'pointer-events-none scale-y-90 opacity-0'
                     )}
                     ref={dropdownRef}
                 >
                     <CustomLink
-                        className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
+                        className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
                         aClassName="w-full"
                         to="/user"
                     >
@@ -107,7 +109,7 @@ export default ({ isDark, setIsDark }) => {
                         Profile
                     </CustomLink>
                     <CustomLink
-                        className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
+                        className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
                         aClassName="w-full"
                         to="/options"
                     >
@@ -116,9 +118,12 @@ export default ({ isDark, setIsDark }) => {
                     </CustomLink>
                     <hr className="my-2 border-current" />
                     <CustomLink
-                        className="hover:bg-light-200 dark:hover:bg-mixed-900 rounded-lg p-2"
+                        className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
                         aClassName="w-full"
-                        onClick={() => dispatch(logout())}
+                        onClick={() => {
+                            dispatch(logout())
+                            setOpen(false)
+                        }}
                         to=""
                     >
                         <SVG className="mr-2" d={logoutIcon} />

@@ -5,7 +5,7 @@ import ResetForm from '../../components/ResetForm'
 
 export default () => {
     return (
-        <div className="dark:bg-mixed-800 bg-light-100 mx-auto flex max-w-lg flex-col rounded-xl shadow-md">
+        <div className="mx-auto flex max-w-lg flex-col rounded-xl bg-light-100 shadow-md dark:bg-mixed-800">
             <Routes>
                 <Route path="/sign-in" element={<SignInForm />} />
                 <Route path="/register" element={<RegisterForm />} />

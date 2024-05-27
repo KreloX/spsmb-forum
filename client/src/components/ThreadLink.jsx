@@ -5,10 +5,10 @@ import SVG from './SVG'
 const date = new Date()
 
 export default () => (
-    <article className="bg-light-100 dark:bg-mixed-800 flex items-center gap-1 rounded-xl p-1 shadow-md">
+    <article className="flex items-center gap-1 rounded-xl bg-light-100 p-1 shadow-md dark:bg-mixed-800">
         <CustomLink to="/">
             <SVG
-                className="hover:text-mixed-600 dark:hover:text-light-500 size-20 stroke-1 p-3"
+                className="size-20 stroke-1 p-3 hover:text-mixed-600 dark:hover:text-light-500"
                 d={bubblesIcon}
             />
         </CustomLink>
