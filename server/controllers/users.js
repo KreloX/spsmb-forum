@@ -2,13 +2,24 @@ const User = require('../models/users')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const crypto = require('crypto')
+const Agenda = require('agenda')
+const { emailPassword, mongoAddress } = require('../secret')
+
+const agenda = new Agenda({ db: { address: mongoAddress } })
+agenda.define('void password token', async (job) => {
+    const { username } = job.attrs.data
+    await User.findOneAndUpdate({ username: username }, { passwordToken: null })
+})
+;(async function () {
+    await agenda.start()
+})()
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.seznam.cz',
     port: 587,
     auth: {
         user: 'spsmb.forum@seznam.cz',
-        pass: '',
+        pass: emailPassword,
     },
 })
 
@@ -152,12 +163,18 @@ exports.requestReset = async (req, res) => {
             { username: req.body.username },
             { passwordToken: token }
         )
+        await agenda.schedule('in 10 minutes', 'void password token', {
+            username: req.body.username,
+        })
         const info = await transporter.sendMail({
             from: '"SPŠMB Fórum" <spsmb.forum@seznam.cz>', // sender address
             to: result.email, // list of receivers
             subject: '[SPŠMB Fórum] Password reset', // Subject line
             text: `Reset your password by clicking the following link: http://localhost:5173/auth/reset/${token}`, // plain text body
-            html: `<p>Reset your password by clicking the following link:</p><a href="http://localhost:5173/auth/reset/${token}">Reset your password</a>`, // html body
+            html: `
+            <p>Reset your password by clicking the following link:</p>
+            <a href="http://localhost:5173/auth/reset/${token}">Reset your password</a>
+            `, // html body
         })
         res.status(200).send({
             msg: 'Reset email sent',
@@ -177,7 +194,7 @@ exports.updatePassword = async (req, res) => {
         const hash = await bcrypt.hash(req.body.password, 10)
         const result = await User.findOneAndUpdate(
             { passwordToken: req.params.token },
-            { password: hash }
+            { password: hash, passwordToken: null }
         )
         if (result) {
             return res.status(200).send({
