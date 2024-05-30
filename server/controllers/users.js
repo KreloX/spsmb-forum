@@ -40,9 +40,9 @@ exports.getAll = async (req, res) => {
     }
 }
 
-exports.getById = async (req, res) => {
+exports.getByUsername = async (req, res) => {
     try {
-        const result = await User.findById(req.params.id)
+        const result = await User.findOne({ username: req.body.username })
             .select('-password')
             .select('-passwordToken')
         if (result) {
@@ -109,6 +109,7 @@ exports.register = async (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: hash,
+            createdDate: new Date(),
         })
         const result = await data.save()
         if (result) {
