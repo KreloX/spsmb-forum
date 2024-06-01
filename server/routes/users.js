@@ -14,7 +14,7 @@ router.delete('/:id', usersController.delete)
 
 //router.put('/:id', usersController.update)
 router.put('/request-reset', usersController.requestReset)
-router.put('/reset-password/:token', usersController.updatePassword)
+router.put('/reset-password', usersController.updatePassword)
 
 router.post('/register', usersController.register)
 router.post('/login', usersController.login)

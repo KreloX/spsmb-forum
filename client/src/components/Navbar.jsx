@@ -22,8 +22,6 @@ export default ({ isDark, setIsDark }) => {
     const dropdownRef = useRef(null)
     const profileRef = useRef(null)
 
-    console.log(success)
-
     const handleClickOutside = (event) => {
         if (
             dropdownRef.current &&

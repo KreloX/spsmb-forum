@@ -6,6 +6,8 @@ import App from './App'
 import './index.css'
 import '@fontsource-variable/inter'
 
+document.getElementById('body').className = 'overflow-y-scroll'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <Provider store={store}>

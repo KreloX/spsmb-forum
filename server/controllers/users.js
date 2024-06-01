@@ -36,7 +36,9 @@ exports.getAll = async (req, res) => {
         }
         res.status(404).send({ msg: 'Users not found' })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
@@ -53,7 +55,9 @@ exports.getByUsername = async (req, res) => {
         }
         res.status(404).send({ msg: 'User not found' })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
@@ -67,7 +71,9 @@ exports.delete = async (req, res) => {
         }
         res.status(500).send({ msg: 'Something went wrong' })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
@@ -91,7 +97,9 @@ exports.update = async (req, res) => {
             msg: 'User was not updated',
         })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
@@ -122,7 +130,9 @@ exports.register = async (req, res) => {
             msg: 'User was not created',
         })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
@@ -153,7 +163,9 @@ exports.login = async (req, res) => {
             }
         })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
@@ -164,6 +176,11 @@ exports.requestReset = async (req, res) => {
             { username: req.body.username },
             { passwordToken: token }
         )
+        if (result == null) {
+            return res.status(400).send({
+                msg: `User "${req.body.username}" does not exist.`,
+            })
+        }
         await agenda.schedule('in 10 minutes', 'void password token', {
             username: req.body.username,
         })
@@ -171,30 +188,34 @@ exports.requestReset = async (req, res) => {
             from: '"SPŠMB Fórum" <spsmb.forum@seznam.cz>', // sender address
             to: result.email, // list of receivers
             subject: '[SPŠMB Fórum] Password reset', // Subject line
-            text: `Reset your password by clicking the following link: http://localhost:5173/auth/reset/${token}`, // plain text body
+            text: `Reset your password by clicking the following link: ${req.body.domain}/auth/reset-password?token=${token}`, // plain text body
             html: `
             <p>Reset your password by clicking the following link:</p>
-            <a href="http://localhost:5173/auth/reset/${token}">Reset your password</a>
+            <a href="${req.body.domain}/auth/reset-password?token=${token}">Reset your password</a>
             `, // html body
         })
         res.status(200).send({
             msg: 'Reset email sent',
         })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }
 
 exports.updatePassword = async (req, res) => {
     try {
+        console.log(req.body.password)
+        console.log(req.body.confirmPassword)
         if (req.body.password != req.body.confirmPassword) {
             return res.status(400).send({
-                msg: 'Password mismatch',
+                msg: 'Passwords do not match',
             })
         }
         const hash = await bcrypt.hash(req.body.password, 10)
         const result = await User.findOneAndUpdate(
-            { passwordToken: req.params.token },
+            { passwordToken: req.body.token },
             { password: hash, passwordToken: null }
         )
         if (result) {
@@ -206,6 +227,8 @@ exports.updatePassword = async (req, res) => {
             msg: 'User password was not changed',
         })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({
+            msg: 'Internal server error, please try again later.',
+        })
     }
 }

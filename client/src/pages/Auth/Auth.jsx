@@ -1,7 +1,7 @@
 import SignInForm from '../../components/SignInForm'
 import RegisterForm from '../../components/RegisterForm'
-import { Link, Route, Routes } from 'react-router-dom'
-import ResetForm from '../../components/ResetForm'
+import { Route, Routes } from 'react-router-dom'
+import Reset from '../../components/Reset'
 
 export default () => {
     return (
@@ -9,7 +9,7 @@ export default () => {
             <Routes>
                 <Route path="/sign-in" element={<SignInForm />} />
                 <Route path="/register" element={<RegisterForm />} />
-                <Route path="/reset-password" element={<ResetForm />} />
+                <Route path="/reset-password" element={<Reset />} />
             </Routes>
         </div>
     )

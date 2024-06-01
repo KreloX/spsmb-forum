@@ -65,3 +65,62 @@ export const loginUser = createAsyncThunk(
         }
     }
 )
+
+export const requestReset = createAsyncThunk(
+    'auth/request-reset',
+    async ({ username, domain }, { rejectWithValue }) => {
+        try {
+            const request = await fetch(`${backendURL}/users/request-reset`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                method: 'PUT',
+                body: JSON.stringify({ username: username, domain: domain }),
+            })
+            const data = await request.json()
+            return {
+                payload: data.payload,
+                msg: data.msg,
+                status: request.status,
+            }
+        } catch (error) {
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message)
+            }
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const resetPassword = createAsyncThunk(
+    'auth/reset-password',
+    async ({ token, password, confirmPassword }, { rejectWithValue }) => {
+        console.log(token)
+        try {
+            const request = await fetch(`${backendURL}/users/reset-password`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                method: 'PUT',
+                body: JSON.stringify({
+                    token: token,
+                    password: password,
+                    confirmPassword: confirmPassword,
+                }),
+            })
+            const data = await request.json()
+            return {
+                payload: data.payload,
+                msg: data.msg,
+                status: request.status,
+            }
+        } catch (error) {
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message)
+            }
+            return rejectWithValue(error.message)
+        }
+    }
+)
