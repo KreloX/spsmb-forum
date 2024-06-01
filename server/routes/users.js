@@ -8,7 +8,7 @@ router.get('/', usersController.getAll)
 //localhost:3000/users/5sa4d949qw86d5sa4d6sa
 //req.params.id
 
-router.get('/:id', usersController.getById)
+router.get('/:username', usersController.getByUsername)
 
 router.delete('/:id', usersController.delete)
 

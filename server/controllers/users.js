@@ -42,7 +42,7 @@ exports.getAll = async (req, res) => {
 
 exports.getByUsername = async (req, res) => {
     try {
-        const result = await User.findOne({ username: req.body.username })
+        const result = await User.findOne({ username: req.params.username })
             .select('-password')
             .select('-passwordToken')
         if (result) {
