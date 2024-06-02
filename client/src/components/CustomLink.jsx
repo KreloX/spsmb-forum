@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
-export default ({ href, aClassName, className, children }) => (
-    <a href={href} className={twMerge('w-fit', aClassName)}>
+export default ({ to, state, className, linkClassName, children }) => (
+    <Link to={to} state={state} className={twMerge('w-fit', linkClassName)}>
         <p
             className={twMerge(
                 'flex whitespace-nowrap font-semibold active:scale-95',
@@ -10,5 +11,5 @@ export default ({ href, aClassName, className, children }) => (
         >
             {children}
         </p>
-    </a>
+    </Link>
 )
