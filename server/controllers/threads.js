@@ -15,6 +15,32 @@ exports.getAll = async (req, res) => {
     }
 }
 
+exports.count = async (req, res) => {
+    try {
+        Thread.countDocuments().then((count) => {
+            res.status(200).send({ msg: 'Count of threads', payload: count })
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+exports.getSome = async (req, res) => {
+    try {
+        const start = parseInt(req.params.start)
+        const amount = parseInt(req.params.amount)
+        Thread.find()
+            .sort({ createdDate: -1 })
+            .skip(start)
+            .limit(amount)
+            .then((result) => {
+                res.status(200).send({ msg: 'Threads found!', payload: result })
+            })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
 exports.getById = async (req, res) => {
     try {
         const result = await Thread.findById(req.params.id)

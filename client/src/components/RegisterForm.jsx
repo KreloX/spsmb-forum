@@ -1,32 +1,26 @@
 import IconInput from './IconInput'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { registerUser } from '../features/authActions'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
-import { useEffect } from 'react'
 import { confirmIcon, keyIcon, mailIcon, userIcon } from '../constants'
 
 export default () => {
-    const { success } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const { register, handleSubmit } = useForm()
     const navigate = useNavigate()
 
     const submitForm = (formData) => {
-        dispatch(registerUser(formData))
+        dispatch(registerUser(formData)).then((result) => {
+            if (result.payload.status == 201) navigate('/')
+        })
     }
-
-    useEffect(() => {
-        if (success) {
-            navigate('/')
-        }
-    }, [success, navigate])
 
     return (
         <>
             <section className="flex text-lg font-semibold">
                 <Link
-                    className="bg-primary-500 hover:bg-primary-400 text-light-100 dark:text-light flex-1 rounded-br-xl rounded-tl-xl px-3 py-6 text-center"
+                    className="flex-1 rounded-br-xl rounded-tl-xl bg-primary-500 px-3 py-6 text-center text-light-100 hover:bg-primary-400 dark:text-light"
                     to="/auth/sign-in"
                 >
                     Sign In
@@ -40,7 +34,7 @@ export default () => {
                     Register a new account
                 </h1>
                 <form
-                    className="mt-8 grid gap-y-5 sm:mx-auto sm:w-full sm:max-w-sm"
+                    className="mx-auto mt-8 grid w-full max-w-sm gap-y-5"
                     onSubmit={handleSubmit(submitForm)}
                 >
                     <IconInput
@@ -73,7 +67,7 @@ export default () => {
                         type="submit"
                         className="mx-auto mt-3 flex w-3/5 justify-center"
                     >
-                        <b className="bg-primary-500 text-light-100 hover:bg-primary-400 focus-visible:outline-primary-600 dark:text-light w-full rounded-xl px-3 py-2 shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95">
+                        <b className="w-full rounded-xl bg-primary-500 px-3 py-2 text-light-100 shadow-md hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 active:scale-95 dark:text-light">
                             Register
                         </b>
                     </button>
