@@ -10,7 +10,7 @@ router.get('/:start/:amount', threadsController.getSome)
 //localhost:3000/threads/5sa4d949qw86d5sa4d6sa
 //req.params.id
 
-router.get('/:id', threadsController.getById)
+router.get('/:user', threadsController.getByUser)
 
 router.post('/', threadsController.create)
 

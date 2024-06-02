@@ -32,8 +32,9 @@ exports.getById = async (req, res) => {
 
 exports.getByThreadId = async (req, res) => {
     try {
-        const result = await Comment.find({ threadId: req.body.threadId })
-        if (result && result.length !== 0) {
+        const result = await Comment.find({ threadId: req.params.threadId })
+
+        if (result) {
             return res.status(200).send({
                 msg: 'Comments found!',
                 payload: result,
@@ -49,9 +50,9 @@ exports.create = async (req, res) => {
     try {
         const data = new Comment({
             text: req.body.text,
-            author: req.user,
+            author: req.body.author,
             date: new Date(),
-            threadId: req.threadId,
+            threadId: req.body.threadId,
         })
         const result = await data.save()
         if (result) {

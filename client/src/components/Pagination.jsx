@@ -1,23 +1,27 @@
-import { leftIcon, lineIcon, rightIcon } from '../constants'
+import { leftIcon, lineIcon, rightIcon, startQuery } from '../constants'
 import SVG from './SVG'
 import { twMerge } from 'tailwind-merge'
 import { Fragment } from 'react'
 import CustomLink from './CustomLink'
 
-export default ({ threads, threadsPerPage, totalThreads }) => {
-    const currentPage = Math.ceil(threads / threadsPerPage)
+export default ({ start, threadsPerPage, totalThreads }) => {
+    const currentPage = Math.ceil(start / threadsPerPage)
     const pages = Math.ceil(totalThreads / threadsPerPage) - 1
 
     return (
         <section className="flex justify-center gap-1 text-sm sm:gap-2 sm:text-base">
             <CustomLink
+                linkClassName={twMerge(
+                    'scale-90 rounded-full sm:scale-100',
+                    start / threadsPerPage == 0 ? 'cursor-not-allowed' : ''
+                )}
                 className={twMerge(
-                    'scale-90 rounded-full px-1 py-0.5 sm:scale-100 sm:px-4 sm:py-1',
-                    threads / threadsPerPage == 0
-                        ? 'cursor-not-allowed bg-light-200 text-mixed-400 shadow-none hover:text-mixed-400 dark:bg-mixed-900 dark:text-mixed-600 dark:hover:text-mixed-600'
+                    'rounded-full px-1 py-0.5 sm:px-4 sm:py-1',
+                    start / threadsPerPage == 0
+                        ? 'bg-light-200 text-mixed-400 shadow-none hover:text-mixed-400 dark:bg-mixed-900 dark:text-mixed-600 dark:hover:text-mixed-600'
                         : 'bg-light-100 shadow-md hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
                 )}
-                to={`?t=${Math.max(0, threads - threadsPerPage)}`}
+                to={`?${startQuery}=${Math.max(0, start - threadsPerPage)}`}
             >
                 <SVG d={leftIcon} />
             </CustomLink>
@@ -33,15 +37,19 @@ export default ({ threads, threadsPerPage, totalThreads }) => {
                     i == pages ||
                     (currentPage > pages - 4 && i > pages - 5) ? (
                         <CustomLink
-                            className={twMerge(
-                                'px-3 py-1 shadow-md sm:px-4',
-                                currentPage == i
-                                    ? 'cursor-default rounded-full bg-primary-600 text-light'
-                                    : 'rounded-full bg-light-100 hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
+                            linkClassName={twMerge(
+                                'rounded-full shadow-md',
+                                currentPage == i ? 'cursor-default' : ''
                             )}
-                            to={`?t=${i * threadsPerPage}`}
+                            className={twMerge(
+                                'rounded-full px-3 py-1 sm:px-4',
+                                currentPage == i
+                                    ? 'bg-primary-600 text-light'
+                                    : 'bg-light-100 hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
+                            )}
+                            to={`?${startQuery}=${i * threadsPerPage}`}
                         >
-                            <b>{i + 1}</b>
+                            {i + 1}
                         </CustomLink>
                     ) : (i == 5 && currentPage < 3) ||
                       (i == pages - 5 && currentPage > pages - 3) ||
@@ -55,13 +63,19 @@ export default ({ threads, threadsPerPage, totalThreads }) => {
                 </Fragment>
             ))}
             <CustomLink
+                linkClassName={twMerge(
+                    'scale-90 rounded-full sm:scale-100',
+                    start + threadsPerPage >= totalThreads
+                        ? 'cursor-not-allowed'
+                        : ''
+                )}
                 className={twMerge(
-                    'scale-90 rounded-full px-1 py-0.5 sm:scale-100 sm:px-4 sm:py-1',
-                    threads + threadsPerPage >= totalThreads
-                        ? 'cursor-not-allowed bg-light-200 text-mixed-400 shadow-none hover:text-mixed-400 dark:bg-mixed-900 dark:text-mixed-600 dark:hover:text-mixed-600'
+                    'rounded-full px-1 py-0.5 sm:px-4 sm:py-1',
+                    start + threadsPerPage >= totalThreads
+                        ? 'bg-light-200 text-mixed-400 shadow-none hover:text-mixed-400 dark:bg-mixed-900 dark:text-mixed-600 dark:hover:text-mixed-600'
                         : 'bg-light-100 shadow-md hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
                 )}
-                to={`?t=${Math.min(pages * threadsPerPage, threads + threadsPerPage)}`}
+                to={`?${startQuery}=${Math.min(pages * threadsPerPage, start + threadsPerPage)}`}
             >
                 <SVG d={rightIcon} />
             </CustomLink>

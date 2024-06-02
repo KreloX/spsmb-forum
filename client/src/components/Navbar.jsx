@@ -80,7 +80,7 @@ export default ({ isDark, setIsDark }) => {
                         </>
                     ) : (
                         <CustomLink
-                            className="rounded-xl bg-primary-600 px-4 py-2 font-bold text-light shadow-md hover:bg-primary-500 active:scale-95"
+                            className="rounded-xl bg-primary-600 px-4 py-2 font-bold text-light shadow-md hover:bg-primary-500"
                             to="/auth/sign-in"
                             state="sign-in"
                         >

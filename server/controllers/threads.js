@@ -41,16 +41,16 @@ exports.getSome = async (req, res) => {
     }
 }
 
-exports.getById = async (req, res) => {
+exports.getByUser = async (req, res) => {
     try {
-        const result = await Thread.findById(req.params.id)
+        const result = await Thread.find({ user: req.params.user })
         if (result) {
             return res.status(200).send({
-                msg: 'Thread found',
+                msg: 'Threads found',
                 payload: result,
             })
         }
-        res.status(404).send({ msg: 'Thread not found' })
+        res.status(404).send({ msg: 'Threads not found' })
     } catch (error) {
         res.status(500).send(error)
     }

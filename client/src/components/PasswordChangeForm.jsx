@@ -29,6 +29,7 @@ export default ({ token }) => {
             <IconInput
                 d={keyIcon}
                 id="password"
+                autoFocus={true}
                 placeholder="Password"
                 register={{ ...register('password') }}
             />

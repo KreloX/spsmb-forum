@@ -41,6 +41,7 @@ export default () => {
                         d={userIcon}
                         id="username"
                         autoComplete="username"
+                        autoFocus={true}
                         placeholder="Username"
                         register={{ ...register('username') }}
                     />

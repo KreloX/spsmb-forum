@@ -1,17 +1,36 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import ProfilePosts from '../../components/ProfilePosts'
 import ProfileComments from '../../components/ProfileComments'
+import { backendURL } from '../../constants'
 
 export default () => {
     const [isCommentScreen, setIsCommentScreen] = useState(false)
+    const [user, setUser] = useState()
+
+    useEffect(() => {
+        fetch(
+            `${backendURL}/users/${window.location.pathname.split('/').pop()}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                method: 'GET',
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => data.payload)
+            .then((data) => setUser(data))
+    }, [])
+
     return (
         <>
-            <div className="dark:bg-mixed-800 bg-light-100 mx-auto flex max-w-3xl max-h-96 rounded-tr-xl rounded-xl">
-                <div className="rounded-full min-h-32 min-w-32 dark:bg-mixed-900 bg-light-300 m-8 border-4 border-primary-500 border-dashed"></div>
-                <div className="flex flex-col mt-10">
-                    <div className=" text-3xl">Kornel Kazmierczak</div>
-                    <div className="">
+            <div className="mx-auto flex max-h-96 max-w-3xl rounded-xl rounded-tr-xl bg-light-100 dark:bg-mixed-800">
+                <div className="m-8 min-h-32 min-w-32 rounded-full border-4 border-dashed border-primary-500 bg-light-300 dark:bg-mixed-900"></div>
+                <div className="mt-10 flex flex-col">
+                    <div className=" text-3xl">{`${user?.username}`}</div>
+                    <div className="text-pretty">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Amet dolore aliquid quasi fuga debitis voluptatibus,
                         placeat alias aspernatur libero minus est, soluta
@@ -20,13 +39,13 @@ export default () => {
                     </div>
                 </div>
             </div>
-            <div className="dark:bg-mixed-800 bg-light-100 mx-auto flex flex-col max-w-3xl max-h-96 rounded-tr-xl rounded-xl mt-6">
+            <div className="mx-auto mt-6 flex max-h-96 max-w-3xl flex-col rounded-xl rounded-tr-xl bg-light-100 dark:bg-mixed-800">
                 <div className="flex text-lg font-semibold">
                     <button
                         className={twMerge(
-                            'bg-primary-500 flex-1 rounded-tl-xl rounded-br-xl px-3',
+                            'flex-1 rounded-br-xl rounded-tl-xl bg-primary-500 px-3',
                             isCommentScreen
-                                ? ' hover:bg-primary-400 text-light-100 dark:text-light'
+                                ? ' text-light-100 hover:bg-primary-400 dark:text-light'
                                 : ' cursor-default bg-transparent'
                         )}
                         onClick={() => setIsCommentScreen(false)}
@@ -35,10 +54,10 @@ export default () => {
                     </button>
                     <button
                         className={twMerge(
-                            'bg-primary-500 flex-1 rounded-bl-xl rounded-tr-xl px-3',
+                            'flex-1 rounded-bl-xl rounded-tr-xl bg-primary-500 px-3',
                             isCommentScreen
                                 ? ' cursor-default bg-transparent'
-                                : ' hover:bg-primary-400 text-light-100 dark:text-light'
+                                : ' text-light-100 hover:bg-primary-400 dark:text-light'
                         )}
                         onClick={() => setIsCommentScreen(true)}
                     >
@@ -46,7 +65,7 @@ export default () => {
                     </button>
                 </div>
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
-                    {isCommentScreen ? <ProfileComments /> : <ProfilePosts />}
+                    {isCommentScreen ? <ProfileComments user={user} /> : <ProfilePosts user={user} />}
                 </div>
             </div>
         </>

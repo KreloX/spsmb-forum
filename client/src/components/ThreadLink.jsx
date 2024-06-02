@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { bubblesIcon } from '../constants'
 import CustomLink from './CustomLink'
 import SVG from './SVG'
@@ -20,26 +19,24 @@ export default ({ thread }) => (
                     <h3>{thread.header}</h3>
                 </CustomLink>
             </div>
-            <p>
-                by{' '}
-                <Link
+            <p className="flex">
+                by&nbsp;
+                <CustomLink
                     className="text-primary-500 hover:text-primary-300 dark:text-primary-100 dark:hover:text-primary-400"
                     to={`user/${thread.user}`}
                 >
                     {thread.user}
-                </Link>
+                </CustomLink>
             </p>
-            <p>
-                <time dateTime={new Date(thread.createdDate).toISOString()}>
-                    {new Intl.DateTimeFormat('en-us', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                        hour: 'numeric',
-                        minute: '2-digit',
-                    }).format(new Date(thread.createdDate))}
-                </time>
-            </p>
+            <time dateTime={new Date(thread.createdDate).toISOString()}>
+                {new Intl.DateTimeFormat('en-us', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                }).format(new Date(thread.createdDate))}
+            </time>
         </section>
     </article>
 )
