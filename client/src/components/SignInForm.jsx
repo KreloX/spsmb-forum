@@ -1,27 +1,21 @@
 import IconInput from './IconInput'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { loginUser } from '../features/authActions'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
-import { useEffect } from 'react'
 import { keyIcon, userIcon } from '../constants'
 import CustomLink from './CustomLink'
 
 export default () => {
-    const { success } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const { register, handleSubmit } = useForm()
     const navigate = useNavigate()
 
     const submitForm = (formData) => {
-        dispatch(loginUser(formData))
+        dispatch(loginUser(formData)).then((result) => {
+            if (result.payload.status == 200) navigate('/')
+        })
     }
-
-    useEffect(() => {
-        if (success) {
-            navigate('/')
-        }
-    }, [success, navigate])
 
     return (
         <>

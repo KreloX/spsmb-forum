@@ -3,14 +3,22 @@ import AppRoutes from './pages/AppRoutes'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { BrowserRouter } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { validateToken } from './features/authActions'
 
 export default () => {
     const [isDark, setIsDark] = useState(
         JSON.parse(localStorage.getItem('isDark'))
     )
+    const dispatch = useDispatch()
+    const { username, authToken } = useSelector((state) => state.auth)
+
+    if (username != null) dispatch(validateToken({ username, authToken }))
+
     useEffect(() => {
         localStorage.setItem('isDark', JSON.stringify(isDark))
     }, [isDark])
+
     return (
         <BrowserRouter>
             <div

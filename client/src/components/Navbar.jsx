@@ -17,7 +17,7 @@ import CustomLink from './CustomLink'
 
 export default ({ isDark, setIsDark }) => {
     const [open, setOpen] = useState(false)
-    const { success } = useSelector((state) => state.auth)
+    const { username } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const dropdownRef = useRef(null)
     const profileRef = useRef(null)
@@ -61,7 +61,7 @@ export default ({ isDark, setIsDark }) => {
                     />
 
                     <div className="ml-3" />
-                    {success ? (
+                    {username != null ? (
                         <>
                             <SVG
                                 className="flex size-10 cursor-pointer items-center justify-center rounded-full p-2 hover:bg-light-400 dark:hover:bg-mixed-800"
@@ -100,15 +100,15 @@ export default ({ isDark, setIsDark }) => {
                 >
                     <CustomLink
                         className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
-                        aClassName="w-full"
-                        to="/user"
+                        linkClassName="w-full"
+                        to={`/user/${username}`}
                     >
                         <SVG className="mr-2" d={userIcon} />
                         Profile
                     </CustomLink>
                     <CustomLink
-                        className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
-                        aClassName="w-full"
+                        className="hidden rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
+                        linkClassName="w-full"
                         to="/options"
                     >
                         <SVG className="mr-2" d={cogIcon} />
@@ -117,7 +117,7 @@ export default ({ isDark, setIsDark }) => {
                     <hr className="my-2 border-current" />
                     <CustomLink
                         className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
-                        aClassName="w-full"
+                        linkClassName="w-full"
                         onClick={() => {
                             dispatch(logout())
                             setOpen(false)

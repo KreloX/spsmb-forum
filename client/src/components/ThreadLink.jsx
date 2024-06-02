@@ -1,12 +1,11 @@
+import { Link } from 'react-router-dom'
 import { bubblesIcon } from '../constants'
 import CustomLink from './CustomLink'
 import SVG from './SVG'
 
-const date = new Date()
-
-export default () => (
+export default ({ thread }) => (
     <article className="flex items-center gap-1 rounded-xl bg-light-100 p-1 shadow-md dark:bg-mixed-800">
-        <CustomLink to="/">
+        <CustomLink to={`thread/${thread._id}`}>
             <SVG
                 className="size-20 stroke-1 p-3 hover:text-mixed-600 dark:hover:text-light-500"
                 d={bubblesIcon}
@@ -16,29 +15,29 @@ export default () => (
             <div className="flex">
                 <CustomLink
                     className="hover:text-mixed-600 dark:hover:text-light-500"
-                    to="/"
+                    to={`thread/${thread._id}`}
                 >
-                    <h3>Heading</h3>
+                    <h3>{thread.header}</h3>
                 </CustomLink>
             </div>
             <p>
                 by{' '}
-                <a
+                <Link
                     className="text-primary-500 hover:text-primary-300 dark:text-primary-100 dark:hover:text-primary-400"
-                    href="/"
+                    to={`user/${thread.user}`}
                 >
-                    lorem ipsum
-                </a>
+                    {thread.user}
+                </Link>
             </p>
             <p>
-                <time dateTime={date.toISOString()}>
+                <time dateTime={new Date(thread.createdDate).toISOString()}>
                     {new Intl.DateTimeFormat('en-us', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
                         hour: 'numeric',
                         minute: '2-digit',
-                    }).format(date)}
+                    }).format(new Date(thread.createdDate))}
                 </time>
             </p>
         </section>

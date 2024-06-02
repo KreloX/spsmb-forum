@@ -1,26 +1,20 @@
 import IconInput from './IconInput'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { registerUser } from '../features/authActions'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
-import { useEffect } from 'react'
 import { confirmIcon, keyIcon, mailIcon, userIcon } from '../constants'
 
 export default () => {
-    const { success } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const { register, handleSubmit } = useForm()
     const navigate = useNavigate()
 
     const submitForm = (formData) => {
-        dispatch(registerUser(formData))
+        dispatch(registerUser(formData)).then((result) => {
+            if (result.payload.status == 201) navigate('/')
+        })
     }
-
-    useEffect(() => {
-        if (success) {
-            navigate('/')
-        }
-    }, [success, navigate])
 
     return (
         <>

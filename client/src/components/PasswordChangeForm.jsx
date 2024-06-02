@@ -16,9 +16,7 @@ export default ({ token }) => {
         dispatch(resetPassword({ ...{ token: token }, ...formData })).then(
             (result) => {
                 setMsg(result.payload.msg)
-                if (result.payload.status == 200) {
-                    navigate('/')
-                }
+                if (result.payload.status == 200) navigate('/auth/sign-in')
             }
         )
     }
