@@ -25,7 +25,7 @@ exports.count = async (req, res) => {
     }
 }
 
-exports.getSome = async (req, res) => {
+exports.getInRange = async (req, res) => {
     try {
         const start = parseInt(req.params.start)
         const amount = parseInt(req.params.amount)
@@ -44,6 +44,21 @@ exports.getSome = async (req, res) => {
 exports.getByUser = async (req, res) => {
     try {
         const result = await Thread.find({ user: req.params.user })
+        if (result) {
+            return res.status(200).send({
+                msg: 'Threads found',
+                payload: result,
+            })
+        }
+        res.status(404).send({ msg: 'Threads not found' })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+exports.getById = async (req, res) => {
+    try {
+        const result = await Thread.findById(req.params.id)
         if (result) {
             return res.status(200).send({
                 msg: 'Threads found',

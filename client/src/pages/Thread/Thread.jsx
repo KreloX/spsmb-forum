@@ -9,7 +9,6 @@ export default () => {
     const { username } = useSelector((state) => state.auth)
     const [thread, setThread] = useState()
     const [comments, setComments] = useState([])
-    const [refresh, setRefresh] = useState(false)
 
     const submitForm = (formData) => {
         fetch(`${backendURL}/comments`, {
@@ -26,12 +25,26 @@ export default () => {
         })
             .then((response) => response.json())
             .then((data) => data.payload)
-            .then(() => setRefresh(!refresh))
+            .then(() =>
+                fetch(
+                    `${backendURL}/comments/thread/${window.location.pathname.split('/').pop()}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: 'application/json',
+                        },
+                        method: 'GET',
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => data.payload)
+                    .then((data) => setComments(data))
+            )
     }
 
     useEffect(() => {
         fetch(
-            `${backendURL}/threads/${window.location.pathname.split('/').pop()}`,
+            `${backendURL}/threads/id/${window.location.pathname.split('/').pop()}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,9 +56,8 @@ export default () => {
             .then((response) => response.json())
             .then((data) => data.payload)
             .then((data) => setThread(data))
-
         fetch(
-            `${backendURL}/comments/${window.location.pathname.split('/').pop()}`,
+            `${backendURL}/comments/thread/${window.location.pathname.split('/').pop()}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +69,7 @@ export default () => {
             .then((response) => response.json())
             .then((data) => data.payload)
             .then((data) => setComments(data))
-    }, [refresh])
+    }, [])
 
     return (
         <div className="mx-auto flex flex-col rounded-xl bg-light-100 shadow-md dark:bg-mixed-800">
@@ -95,12 +107,15 @@ export default () => {
                 </form>
 
                 {comments.map((comment, i) => (
-                    <div className="mt-3 rounded-xl bg-light-200 p-3 dark:bg-mixed-700">
-                        <p key={i}>{comment.text}</p>
-                        <p key={i} className="flex">
+                    <div
+                        key={i}
+                        className="mt-3 rounded-xl bg-light-200 p-3 dark:bg-mixed-700"
+                    >
+                        <p>{comment.text}</p>
+                        <p className="flex">
                             by&nbsp;
                             <CustomLink to={`/user/${comment.author}`}>
-                                {thread?.user}
+                                {comment?.author}
                             </CustomLink>
                         </p>
                     </div>

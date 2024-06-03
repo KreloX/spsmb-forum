@@ -10,7 +10,7 @@ export default () => {
 
     useEffect(() => {
         fetch(
-            `${backendURL}/users/${window.location.pathname.split('/').pop()}`,
+            `${backendURL}/users/username/${window.location.pathname.split('/').pop()}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

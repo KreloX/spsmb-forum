@@ -28,7 +28,7 @@ export default () => {
                 : 16
         )
 
-        fetch(`${backendURL}/threads/${start}/${threadsPerPage}`, {
+        fetch(`${backendURL}/threads/range/${start}/${threadsPerPage}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
