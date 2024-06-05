@@ -21,7 +21,7 @@ export default ({ start, threadsPerPage, totalThreads }) => {
                         ? 'bg-light-200 text-mixed-400 shadow-none hover:text-mixed-400 dark:bg-mixed-900 dark:text-mixed-600 dark:hover:text-mixed-600'
                         : 'bg-light-100 shadow-md hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
                 )}
-                to={`?${startQuery}=${Math.max(0, start - threadsPerPage)}`}
+                query={{ [startQuery]: Math.max(0, start - threadsPerPage) }}
             >
                 <SVG d={leftIcon} />
             </CustomLink>
@@ -47,7 +47,7 @@ export default ({ start, threadsPerPage, totalThreads }) => {
                                     ? 'bg-primary-600 text-light'
                                     : 'bg-light-100 hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
                             )}
-                            to={`?${startQuery}=${i * threadsPerPage}`}
+                            query={{ [startQuery]: i * threadsPerPage }}
                         >
                             {i + 1}
                         </CustomLink>
@@ -75,7 +75,12 @@ export default ({ start, threadsPerPage, totalThreads }) => {
                         ? 'bg-light-200 text-mixed-400 shadow-none hover:text-mixed-400 dark:bg-mixed-900 dark:text-mixed-600 dark:hover:text-mixed-600'
                         : 'bg-light-100 shadow-md hover:text-mixed-600 dark:bg-mixed-800 dark:hover:text-light-500'
                 )}
-                to={`?${startQuery}=${Math.min(pages * threadsPerPage, start + threadsPerPage)}`}
+                query={{
+                    [startQuery]: Math.min(
+                        pages * threadsPerPage,
+                        start + threadsPerPage
+                    ),
+                }}
             >
                 <SVG d={rightIcon} />
             </CustomLink>

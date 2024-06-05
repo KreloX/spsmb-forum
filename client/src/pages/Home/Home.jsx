@@ -17,7 +17,7 @@ import { twMerge } from 'tailwind-merge'
 
 export default () => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [start, setStart] = useState(Number(searchParams.get(startQuery)))
+    const [start, setStart] = useState(0)
     const [threadsPerPage, setThreadsPerPage] = useState(
         searchParams.get(threadsPerPageQuery)
             ? Math.max(1, Number(searchParams.get(threadsPerPageQuery)))
@@ -48,6 +48,8 @@ export default () => {
     const threadsWidth = document.getElementById('threadsPerPage')?.offsetWidth
 
     useEffect(() => {
+        setStart(Number(searchParams.get(startQuery)))
+
         fetch(`${backendURL}/threads/range/${start}/${threadsPerPage}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +102,7 @@ export default () => {
                         />
                         {threadsOpen ? (
                             <ul
-                                className={`absolute z-10 -ml-3 mb-2 mt-52 rounded-b-xl bg-light-200 shadow-md`}
+                                className={`absolute z-10 -ml-3 mb-2 mt-52 rounded-b-xl bg-light-200 shadow-md dark:bg-mixed-700`}
                                 style={{ minWidth: threadsWidth }}
                             >
                                 {threadsPerPageOptions.map((option) => (
