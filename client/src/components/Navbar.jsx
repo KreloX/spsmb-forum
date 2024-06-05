@@ -106,14 +106,6 @@ export default ({ isDark, setIsDark }) => {
                         <SVG className="mr-2" d={userIcon} />
                         Profile
                     </CustomLink>
-                    <CustomLink
-                        className="hidden rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
-                        linkClassName="w-full"
-                        to="/options"
-                    >
-                        <SVG className="mr-2" d={cogIcon} />
-                        Options
-                    </CustomLink>
                     <hr className="my-2 border-current" />
                     <CustomLink
                         className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"

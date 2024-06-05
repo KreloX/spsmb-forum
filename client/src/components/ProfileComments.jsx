@@ -1,3 +1,6 @@
+import { turnArrowIcon } from '../constants'
+import SVG from './SVG'
+
 export default ({ user }) => {
     return (
         <form className="mb-10 space-y-5">
@@ -11,20 +14,7 @@ export default ({ user }) => {
                 </div>
                 <div className="flex">
                     <div className="ml-5 mt-6 text-light-500 dark:text-mixed-800">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-10"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
-                            />
-                        </svg>
+                        <SVG className="size-10" d={turnArrowIcon} />
                     </div>
                     <div className="mx-auto ml-3 mr-8 mt-2 rounded-xl rounded-tr-xl border border-solid border-light-500 p-1 dark:border-mixed-800">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.

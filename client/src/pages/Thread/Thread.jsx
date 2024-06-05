@@ -37,8 +37,7 @@ export default () => {
                     }
                 )
                     .then((response) => response.json())
-                    .then((data) => data.payload)
-                    .then((data) => setComments(data))
+                    .then((data) => setComments(data.payload))
             )
     }
 
@@ -54,8 +53,7 @@ export default () => {
             }
         )
             .then((response) => response.json())
-            .then((data) => data.payload)
-            .then((data) => setThread(data))
+            .then((data) => setThread(data.payload))
         fetch(
             `${backendURL}/comments/thread/${window.location.pathname.split('/').pop()}`,
             {
@@ -67,8 +65,7 @@ export default () => {
             }
         )
             .then((response) => response.json())
-            .then((data) => data.payload)
-            .then((data) => setComments(data))
+            .then((data) => setComments(data.payload))
     }, [])
 
     return (
@@ -115,7 +112,7 @@ export default () => {
                         <p className="flex">
                             by&nbsp;
                             <CustomLink to={`/user/${comment.author}`}>
-                                {comment?.author}
+                                {comment.author}
                             </CustomLink>
                         </p>
                     </div>

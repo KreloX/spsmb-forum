@@ -7,7 +7,7 @@ import Profile from './Profile/Profile'
 
 export default () => (
     <Routes>
-        <Route path="" element={<Home />} />
+        <Route path="/*" element={<Home />} />
         <Route path="auth/*" element={<Auth />} />
         <Route path="thread/*" element={<Thread />} />
         <Route path="create-thread" element={<CreateThread />} />

@@ -7,6 +7,7 @@ import { backendURL } from '../../constants'
 export default () => {
     const [isCommentScreen, setIsCommentScreen] = useState(false)
     const [user, setUser] = useState()
+    const [msg, setMsg] = useState()
 
     useEffect(() => {
         fetch(
@@ -20,11 +21,13 @@ export default () => {
             }
         )
             .then((response) => response.json())
-            .then((data) => data.payload)
-            .then((data) => setUser(data))
+            .then((data) => {
+                setUser(data.payload)
+                setMsg(data.msg)
+            })
     }, [])
 
-    return (
+    return user ? (
         <>
             <div className="mx-auto flex max-h-96 max-w-3xl rounded-xl rounded-tr-xl bg-light-100 dark:bg-mixed-800">
                 <div className="m-8 min-h-32 min-w-32 rounded-full border-4 border-dashed border-primary-500 bg-light-300 dark:bg-mixed-900"></div>
@@ -65,9 +68,15 @@ export default () => {
                     </button>
                 </div>
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
-                    {isCommentScreen ? <ProfileComments user={user} /> : <ProfilePosts user={user} />}
+                    {isCommentScreen ? (
+                        <ProfileComments user={user} />
+                    ) : (
+                        <ProfilePosts user={user} />
+                    )}
                 </div>
             </div>
         </>
+    ) : (
+        <>{msg}</>
     )
 }
