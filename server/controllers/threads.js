@@ -41,9 +41,9 @@ exports.getInRange = async (req, res) => {
     }
 }
 
-exports.getByUser = async (req, res) => {
+exports.getByAuthor = async (req, res) => {
     try {
-        const result = await Thread.find({ user: req.params.user })
+        const result = await Thread.find({ author: req.params.author })
         if (result) {
             return res.status(200).send({
                 msg: 'Threads found',
@@ -75,9 +75,9 @@ exports.create = async (req, res) => {
     try {
         const data = new Thread({
             createdDate: new Date(),
-            header: req.body.header,
+            title: req.body.title,
             text: req.body.text,
-            user: req.body.user,
+            author: req.body.author,
             locked: false,
         })
         const result = await data.save()
@@ -112,7 +112,7 @@ exports.delete = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const data = {
-            header: req.body.header,
+            title: req.body.title,
             text: req.body.text,
         }
         const result = await Thread.findByIdAndUpdate(req.params.id, data)

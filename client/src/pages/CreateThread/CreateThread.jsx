@@ -16,9 +16,9 @@ export default () => {
             },
             method: 'POST',
             body: JSON.stringify({
-                header: formData.title,
+                title: formData.title,
                 text: formData.body,
-                user: username,
+                author: username,
             }),
         })
             .then((response) => response.json())

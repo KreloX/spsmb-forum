@@ -10,6 +10,8 @@ export default () => {
     const [thread, setThread] = useState()
     const [comments, setComments] = useState([])
 
+    const threadId = window.location.pathname.split('/').pop()
+
     const submitForm = (formData) => {
         fetch(`${backendURL}/comments`, {
             headers: {
@@ -20,50 +22,41 @@ export default () => {
             body: JSON.stringify({
                 text: formData.comment,
                 author: username,
-                threadId: window.location.pathname.split('/').pop(),
+                threadId,
             }),
         })
             .then((response) => response.json())
             .then((data) => data.payload)
             .then(() =>
-                fetch(
-                    `${backendURL}/comments/thread/${window.location.pathname.split('/').pop()}`,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Accept: 'application/json',
-                        },
-                        method: 'GET',
-                    }
-                )
+                fetch(`${backendURL}/comments/thread/${threadId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    method: 'GET',
+                })
                     .then((response) => response.json())
                     .then((data) => setComments(data.payload))
             )
     }
 
     useEffect(() => {
-        fetch(
-            `${backendURL}/threads/id/${window.location.pathname.split('/').pop()}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-                method: 'GET',
-            }
-        )
+        fetch(`${backendURL}/threads/id/${threadId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            method: 'GET',
+        })
             .then((response) => response.json())
             .then((data) => setThread(data.payload))
-        fetch(
-            `${backendURL}/comments/thread/${window.location.pathname.split('/').pop()}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-                method: 'GET',
-            }
-        )
+        fetch(`${backendURL}/comments/thread/${threadId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            method: 'GET',
+        })
             .then((response) => response.json())
             .then((data) => setComments(data.payload))
     }, [])
@@ -71,12 +64,12 @@ export default () => {
     return (
         <div className="mx-auto flex flex-col rounded-xl bg-light-100 shadow-md dark:bg-mixed-800">
             <section className="flex min-h-full flex-col px-6 py-12 lg:px-8">
-                <h1 className="tracking-tight">{thread?.header}</h1>
+                <h1 className="tracking-tight">{thread?.title}</h1>
                 <p className="text-pretty">{thread?.text}</p>
                 <p className="flex">
                     by&nbsp;
-                    <CustomLink to={`/user/${thread?.user}`}>
-                        {thread?.user}
+                    <CustomLink to={`/user/${thread?.author}`}>
+                        {thread?.author}
                     </CustomLink>
                 </p>
             </section>

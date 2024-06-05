@@ -16,16 +16,16 @@ export default ({ thread }) => (
                     className="hover:text-mixed-600 dark:hover:text-light-500"
                     to={`thread/${thread._id}`}
                 >
-                    <h3>{thread.header}</h3>
+                    <h3>{thread.title}</h3>
                 </CustomLink>
             </div>
             <p className="flex">
                 by&nbsp;
                 <CustomLink
                     className="text-primary-500 hover:text-primary-300 dark:text-primary-100 dark:hover:text-primary-400"
-                    to={`user/${thread.user}`}
+                    to={`author/${thread.author}`}
                 >
-                    {thread.user}
+                    {thread.author}
                 </CustomLink>
             </p>
             <time dateTime={new Date(thread.createdDate).toISOString()}>

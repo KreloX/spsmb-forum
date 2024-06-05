@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const schema = mongoose.Schema({
-    createdDate: { type: Date, required: true },
-    header: { type: String, required: true },
+    title: { type: String, required: true },
     text: { type: String, required: true },
-    user: { type: String, required: true },
+    author: { type: String, required: true },
+    createdDate: { type: Date, required: true },
     locked: { type: Boolean, required: true },
 })
 
