@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../features/authSlice'
 import {
     bellIcon,
-    cogIcon,
+    downIcon,
     loginIcon,
     logoutIcon,
     moonIcon,
@@ -68,14 +68,24 @@ export default ({ isDark, setIsDark }) => {
                                 d={bellIcon}
                             />
                             <div
-                                className="ml-3 flex cursor-pointer items-center"
+                                className={twMerge(
+                                    'ml-3 flex cursor-pointer items-center rounded-full px-1 py-1 hover:bg-light-400 dark:hover:bg-mixed-800',
+                                    open ? 'bg-light-400 dark:bg-mixed-800' : ''
+                                )}
                                 onClick={(e) => {
                                     e.stopPropagation()
                                     setOpen(!open)
                                 }}
                                 ref={profileRef}
                             >
-                                <div className="size-10 rounded-full bg-black" />
+                                <SVG
+                                    className={twMerge(
+                                        'ml-1 transition',
+                                        open && 'rotate-180'
+                                    )}
+                                    d={downIcon}
+                                />
+                                <div className="ml-1 size-8 rounded-full bg-black" />
                             </div>
                         </>
                     ) : (
@@ -93,13 +103,13 @@ export default ({ isDark, setIsDark }) => {
             <div className="flex justify-end">
                 <div
                     className={twMerge(
-                        'absolute flex w-min origin-top flex-col rounded-xl border border-light-400 bg-light-100 p-3 shadow-md transition duration-100 ease-in-out dark:border-mixed-400 dark:bg-mixed-800',
+                        'absolute z-20 flex w-min origin-top flex-col rounded-xl border border-light-400 bg-light-100 p-3 shadow-md transition duration-100 ease-in-out dark:border-mixed-400 dark:bg-mixed-800',
                         open ? '' : 'pointer-events-none scale-y-90 opacity-0'
                     )}
                     ref={dropdownRef}
                 >
                     <CustomLink
-                        className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
+                        className="rounded-lg p-2 pr-3 hover:bg-light-200 dark:hover:bg-mixed-900"
                         linkClassName="w-full"
                         to={`/user/${username}`}
                     >
@@ -108,7 +118,7 @@ export default ({ isDark, setIsDark }) => {
                     </CustomLink>
                     <hr className="my-2 border-current" />
                     <CustomLink
-                        className="rounded-lg p-2 hover:bg-light-200 dark:hover:bg-mixed-900"
+                        className="rounded-lg p-2 pr-3 hover:bg-light-200 dark:hover:bg-mixed-900"
                         linkClassName="w-full"
                         onClick={() => {
                             dispatch(logout())

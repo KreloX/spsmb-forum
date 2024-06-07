@@ -45,8 +45,6 @@ export default () => {
         }
     }, [dropdownRef])
 
-    const threadsWidth = document.getElementById('threadsPerPage')?.offsetWidth
-
     useEffect(() => {
         setStart(Number(searchParams.get(startQuery)))
 
@@ -79,48 +77,52 @@ export default () => {
     return (
         <>
             <aside className="rounded-xl bg-light-100 dark:bg-mixed-800"></aside>
-            <section className="mb-4 flex rounded-xl bg-light-100 p-4 shadow-md dark:bg-mixed-800">
-                <div className="flex items-center gap-2">
-                    <b>Threads per page</b>
-                    <div
-                        id="threadsPerPage"
-                        className={twMerge(
-                            'flex cursor-pointer items-center gap-1 rounded-xl bg-light-200 px-3 py-2 font-semibold shadow-md dark:bg-mixed-700',
-                            threadsOpen ? 'rounded-b-none' : ''
-                        )}
-                        onClick={() => setThreadsOpen(!threadsOpen)}
-                        onMouseDown={(e) => e.preventDefault()}
-                        ref={dropdownRef}
-                    >
-                        {threadsPerPage}
-                        <SVG
-                            className={twMerge(
-                                'mt-0.5 size-5 transition',
-                                threadsOpen ? 'rotate-180' : ''
+            <section className="mb-4 flex justify-between rounded-xl bg-light-100 p-4 shadow-md dark:bg-mixed-800">
+                <div className="flex items-center gap-2 whitespace-nowrap font-semibold">
+                    Threads per page
+                    <div className="pb-10">
+                        <div
+                            className="absolute z-10 cursor-pointer rounded-xl bg-light-200 shadow-md dark:bg-mixed-700"
+                            onClick={() => setThreadsOpen(!threadsOpen)}
+                            onMouseDown={(e) => e.preventDefault()}
+                            ref={dropdownRef}
+                        >
+                            <div className="flex items-center gap-1 px-3 py-2">
+                                {threadsPerPage}
+                                <SVG
+                                    className={twMerge(
+                                        'mt-0.5 size-5 transition',
+                                        threadsOpen ? 'rotate-180' : ''
+                                    )}
+                                    d={downIcon}
+                                />
+                            </div>
+                            {threadsOpen ? (
+                                <ul>
+                                    {threadsPerPageOptions.map((option) => (
+                                        <li
+                                            key={option}
+                                            className={twMerge(
+                                                'w-full py-2 pl-3 pr-5 last:rounded-b-xl hover:bg-light-300 dark:hover:bg-mixed-800',
+                                                option == threadsPerPage
+                                                    ? 'bg-primary-600 text-light hover:bg-primary-600 dark:hover:bg-primary-600'
+                                                    : ''
+                                            )}
+                                            onClick={() =>
+                                                setThreadsPerPage(option)
+                                            }
+                                            onMouseDown={(e) =>
+                                                e.preventDefault()
+                                            }
+                                        >
+                                            {option}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <></>
                             )}
-                            d={downIcon}
-                        />
-                        {threadsOpen ? (
-                            <ul
-                                className={`absolute z-10 -ml-3 mb-2 mt-52 rounded-b-xl bg-light-200 shadow-md dark:bg-mixed-700`}
-                                style={{ minWidth: threadsWidth }}
-                            >
-                                {threadsPerPageOptions.map((option) => (
-                                    <li
-                                        key={option}
-                                        className="px-3 py-2 last:rounded-b-xl hover:bg-light-300 dark:hover:bg-mixed-800"
-                                        onClick={() =>
-                                            setThreadsPerPage(option)
-                                        }
-                                        onMouseDown={(e) => e.preventDefault()}
-                                    >
-                                        {option}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <></>
-                        )}
+                        </div>
                     </div>
                 </div>
                 <CustomLink
