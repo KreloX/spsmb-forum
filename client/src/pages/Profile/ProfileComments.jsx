@@ -1,16 +1,15 @@
-import { turnArrowIcon } from '../constants'
-import SVG from './SVG'
+import { turnArrowIcon } from '../../constants'
+import SVG from '../../components/SVG'
 
 export default ({ user }) => {
     return (
-        <form className="mb-10 space-y-5">
-            <div className="mb-5 flex max-h-96 flex-col rounded-xl rounded-tr-xl bg-light-200 dark:bg-mixed-700">
+        <div className="mb-10 space-y-5">
+            <article className="flex max-h-96 flex-col rounded-xl rounded-tr-xl bg-light-200 dark:bg-mixed-700">
                 <div className="ml-5 mt-4 flex">
                     <div className=" max-h-12 min-h-12 min-w-12 max-w-12 rounded-full bg-light-300 dark:bg-mixed-900"></div>
-                    <div className="ml-2 mr-8 mt-2 border-b border-light-500 text-xl text-light-600 dark:border-mixed-800 dark:text-light-400">
-                        Title Title Title Title Title Title Title Title Title
-                        Title Title Title Title
-                    </div>
+                    <p className="pl-2 mr-8 mt-2 border-b border-light-500 text-xl text-light-600 dark:border-mixed-800 dark:text-light-400">
+                        Title Title Title Title Title Title Title Title
+                    </p>
                 </div>
                 <div className="flex">
                     <div className="ml-5 mt-6 text-light-500 dark:text-mixed-800">
@@ -24,8 +23,10 @@ export default ({ user }) => {
                         non voluptates.
                     </div>
                 </div>
-                <div className="mb-2 ml-8">Date commented: date here</div>
-            </div>
-        </form>
+                <p className="pl-8">
+                    Date commented: <time>date here</time>
+                </p>
+            </article>
+        </div>
     )
 }

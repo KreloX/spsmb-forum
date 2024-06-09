@@ -1,9 +1,11 @@
-import IconInput from './IconInput'
+import IconInput from '../../components/IconInput'
 import { useDispatch } from 'react-redux'
-import { registerUser } from '../features/authActions'
+import { loginUser } from '../../features/authActions'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
-import { confirmIcon, keyIcon, mailIcon, userIcon } from '../constants'
+import { keyIcon, userIcon } from '../../constants'
+import CustomLink from '../../components/CustomLink'
+import Wrapper from '../../components/Wrapper'
 
 export default () => {
     const dispatch = useDispatch()
@@ -11,27 +13,27 @@ export default () => {
     const navigate = useNavigate()
 
     const submitForm = (formData) => {
-        dispatch(registerUser(formData)).then((result) => {
-            if (result.payload.status == 201) navigate('/')
+        dispatch(loginUser(formData)).then((result) => {
+            if (result.payload.status == 200) navigate('/')
         })
     }
 
     return (
-        <>
-            <section className="flex text-lg font-semibold">
-                <Link
-                    className="flex-1 rounded-br-xl rounded-tl-xl bg-primary-500 px-3 py-6 text-center text-light-100 hover:bg-primary-400 dark:text-light"
-                    to="/auth/sign-in"
-                >
+        <Wrapper>
+            <div className="flex text-lg font-semibold">
+                <Link className="flex-1 cursor-default rounded-br-xl rounded-tl-xl px-3 py-6 text-center">
                     Sign In
                 </Link>
-                <Link className="flex-1 cursor-default rounded-bl-xl rounded-tr-xl px-3 py-6 text-center">
+                <Link
+                    className="flex-1 rounded-bl-xl rounded-tr-xl bg-primary-500 px-3 py-6 text-center text-light-100 hover:bg-primary-400 dark:text-light"
+                    to="/auth/register"
+                >
                     Register
                 </Link>
-            </section>
-            <section className="flex min-h-full flex-1 flex-col px-6 py-12 lg:px-8">
+            </div>
+            <div className="flex min-h-full flex-1 flex-col px-6 py-12 lg:px-8">
                 <h1 className="text-center tracking-tight">
-                    Register a new account
+                    Sign in to your account
                 </h1>
                 <form
                     className="mx-auto mt-8 grid w-full max-w-sm gap-y-5"
@@ -46,34 +48,31 @@ export default () => {
                         register={{ ...register('username') }}
                     />
                     <IconInput
-                        d={mailIcon}
-                        id="email"
-                        autoComplete="email"
-                        placeholder="Email"
-                        register={{ ...register('email') }}
-                    />
-                    <IconInput
                         d={keyIcon}
                         id="password"
+                        autoComplete="current-password"
                         placeholder="Password"
                         register={{ ...register('password') }}
-                    />
-                    <IconInput
-                        d={confirmIcon}
-                        id="password"
-                        placeholder="Confirm password"
-                        register={{ ...register('confirmPassword') }}
-                    />
+                    >
+                        <div className="flex justify-end">
+                            <CustomLink
+                                to="/auth/reset-password"
+                                className="text-sm font-semibold text-primary-500 hover:text-primary-300 dark:text-primary-100 dark:hover:text-primary-400"
+                            >
+                                Forgot password?
+                            </CustomLink>
+                        </div>
+                    </IconInput>
                     <button
                         type="submit"
-                        className="mx-auto mt-3 flex w-3/5 justify-center"
+                        className="mx-auto flex w-3/5 justify-center"
                     >
                         <b className="w-full rounded-xl bg-primary-500 px-3 py-2 text-light-100 shadow-md hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 active:scale-95 dark:text-light">
-                            Register
+                            Sign in
                         </b>
                     </button>
                 </form>
-            </section>
-        </>
+            </div>
+        </Wrapper>
     )
 }

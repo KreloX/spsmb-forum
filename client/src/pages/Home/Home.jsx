@@ -14,6 +14,7 @@ import CustomLink from '../../components/CustomLink'
 import SVG from '../../components/SVG'
 import { useSelector } from 'react-redux'
 import { twMerge } from 'tailwind-merge'
+import Wrapper from '../../components/Wrapper'
 
 export default () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -77,7 +78,7 @@ export default () => {
     return (
         <>
             <aside className="rounded-xl bg-light-100 dark:bg-mixed-800"></aside>
-            <section className="mb-4 flex justify-between rounded-xl bg-light-100 p-4 shadow-md dark:bg-mixed-800">
+            <Wrapper className="mb-4 max-w-none flex-row justify-between p-4">
                 <div className="flex items-center gap-2 whitespace-nowrap font-semibold">
                     Threads per page
                     <div className="pb-10">
@@ -136,7 +137,7 @@ export default () => {
                     <SVG className="size-8" d={plusIcon} />
                     <h3>Create a thread</h3>
                 </CustomLink>
-            </section>
+            </Wrapper>
             <section className="grid gap-3">
                 <Pagination
                     start={start}

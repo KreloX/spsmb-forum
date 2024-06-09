@@ -3,14 +3,15 @@ import { backendURL } from '../../constants'
 import { useForm } from 'react-hook-form'
 import CustomLink from '../../components/CustomLink'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import Wrapper from '../../components/Wrapper'
 
 export default () => {
     const { register, handleSubmit } = useForm()
     const { username } = useSelector((state) => state.auth)
     const [thread, setThread] = useState()
     const [comments, setComments] = useState([])
-
-    const threadId = window.location.pathname.split('/').pop()
+    const { threadId } = useParams()
 
     const submitForm = (formData) => {
         fetch(`${backendURL}/comments`, {
@@ -62,7 +63,7 @@ export default () => {
     }, [])
 
     return (
-        <div className="mx-auto flex flex-col rounded-xl bg-light-100 shadow-md dark:bg-mixed-800">
+        <Wrapper className="max-w-none">
             <section className="flex min-h-full flex-col px-6 py-12 lg:px-8">
                 <h1 className="tracking-tight">{thread?.title}</h1>
                 <p className="text-pretty">{thread?.text}</p>
@@ -111,6 +112,6 @@ export default () => {
                     </div>
                 ))}
             </section>
-        </div>
+        </Wrapper>
     )
 }

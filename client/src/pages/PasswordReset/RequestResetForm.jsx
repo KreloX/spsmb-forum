@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
-import { userIcon } from '../constants'
-import IconInput from './IconInput'
+import { userIcon } from '../../constants'
+import IconInput from '../../components/IconInput'
 import { useDispatch } from 'react-redux'
-import { requestReset } from '../features/authActions'
+import { requestReset } from '../../features/authActions'
 import { useState } from 'react'
 
 export default () => {

@@ -23,7 +23,7 @@ export default ({ thread }) => (
                 by&nbsp;
                 <CustomLink
                     className="text-primary-500 hover:text-primary-300 dark:text-primary-100 dark:hover:text-primary-400"
-                    to={`author/${thread.author}`}
+                    to={`user/${thread.author}`}
                 >
                     {thread.author}
                 </CustomLink>

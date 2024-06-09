@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form'
-import { confirmIcon, keyIcon } from '../constants'
-import IconInput from './IconInput'
+import { confirmIcon, keyIcon } from '../../constants'
+import IconInput from '../../components/IconInput'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { resetPassword } from '../features/authActions'
+import { resetPassword } from '../../features/authActions'
 
 export default ({ token }) => {
     const { register, handleSubmit } = useForm()

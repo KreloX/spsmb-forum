@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import ProfilePosts from '../../components/ProfilePosts'
-import ProfileComments from '../../components/ProfileComments'
 import { backendURL } from '../../constants'
+import { useParams } from 'react-router-dom'
+import Wrapper from '../../components/Wrapper'
+import ProfileComments from './ProfileComments'
+import ProfilePosts from './ProfilePosts'
 
 export default () => {
     const [isCommentScreen, setIsCommentScreen] = useState(false)
     const [user, setUser] = useState()
     const [msg, setMsg] = useState()
+    const { username } = useParams()
 
     useEffect(() => {
-        fetch(
-            `${backendURL}/users/username/${window.location.pathname.split('/').pop()}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-                method: 'GET',
-            }
-        )
+        fetch(`${backendURL}/users/username/${username}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            method: 'GET',
+        })
             .then((response) => response.json())
             .then((data) => {
                 setUser(data.payload)
@@ -29,10 +29,10 @@ export default () => {
 
     return user ? (
         <>
-            <div className="mx-auto flex max-h-96 max-w-3xl rounded-xl rounded-tr-xl bg-light-100 dark:bg-mixed-800">
+            <Wrapper className="max-w-3xl flex-row">
                 <div className="m-8 min-h-32 min-w-32 rounded-full border-4 border-dashed border-primary-500 bg-light-300 dark:bg-mixed-900"></div>
-                <div className="mt-10 flex flex-col">
-                    <div className=" text-3xl">{`${user?.username}`}</div>
+                <article className="mt-10 flex flex-col">
+                    <h1>{user?.username}</h1>
                     <div className="text-pretty">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Amet dolore aliquid quasi fuga debitis voluptatibus,
@@ -40,13 +40,13 @@ export default () => {
                         excepturi deleniti repudiandae doloremque rem. Sapiente,
                         non voluptates.
                     </div>
-                </div>
-            </div>
-            <div className="mx-auto mt-6 flex max-h-96 max-w-3xl flex-col rounded-xl rounded-tr-xl bg-light-100 dark:bg-mixed-800">
+                </article>
+            </Wrapper>
+            <Wrapper className="mt-6 max-w-3xl">
                 <div className="flex text-lg font-semibold">
                     <button
                         className={twMerge(
-                            'flex-1 rounded-br-xl rounded-tl-xl bg-primary-500 px-3',
+                            'flex-1 rounded-br-xl rounded-tl-xl bg-primary-500 py-2',
                             isCommentScreen
                                 ? ' text-light-100 hover:bg-primary-400 dark:text-light'
                                 : ' cursor-default bg-transparent'
@@ -57,7 +57,7 @@ export default () => {
                     </button>
                     <button
                         className={twMerge(
-                            'flex-1 rounded-bl-xl rounded-tr-xl bg-primary-500 px-3',
+                            'flex-1 rounded-bl-xl rounded-tr-xl bg-primary-500',
                             isCommentScreen
                                 ? ' cursor-default bg-transparent'
                                 : ' text-light-100 hover:bg-primary-400 dark:text-light'
@@ -74,7 +74,7 @@ export default () => {
                         <ProfilePosts user={user} />
                     )}
                 </div>
-            </div>
+            </Wrapper>
         </>
     ) : (
         <>{msg}</>
